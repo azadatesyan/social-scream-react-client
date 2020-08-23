@@ -37,7 +37,6 @@ const Home = () => {
     }, []);
 
     const screamsData = isLoading ? <p>Loading screams...</p> : screams.map(scream => <Scream key={scream.screamId} data={scream} />) ;
-
     return (
         <Grid container spacing={2}>
             <Grid item sm={8} xs={12}>
