@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Card, CardMedia, CardContent, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles/';
 import { Link } from 'react-router-dom';
@@ -39,7 +39,5 @@ const Scream = (props) => {
         </Card>
     )
 }
-
-// TO DO : CREATE A SCREAM WITH FIREBASE SO THAT THE DATE IS ISO FORMATTED, TO THEN CHECK IF DAYJS CAN PARSE IT
 
 export default withStyles(styles)(Scream);
