@@ -1,8 +1,11 @@
-import React from 'react';
+// React imports
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+
+// Material UI imports
 import { withStyles } from '@material-ui/core/styles/';
 import { Grid, Typography, TextField, Button } from '@material-ui/core';
 import AppIcon from '../util/monkey.svg';
-import { useState } from 'react';
 
 // Material-UI styling
 const styles = {
@@ -27,7 +30,10 @@ const styles = {
         margin: '5px auto'
     },
     btn: {
-        margin: '25px auto'
+        margin: '10px auto'
+    },
+    errorMessage: {
+        margin: '10px auto'
     }
 };
 
@@ -35,9 +41,13 @@ const Login = (props) => {
     // Importing classes for MUI withStyles styling
     const { classes } = props;
 
+    // Importing history from React Router DOM
+    const history = useHistory();
+
     // Controlled form components
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [errors, setErrors] = useState('');
 
     // Handle form submit
     const handleSubmit = async (event) => {
@@ -55,9 +65,17 @@ const Login = (props) => {
                 },
                 body: JSON.stringify(userCredentials)
             });
-            const userToken = await res.json();
+            const responseData = await res.json();
+            if(res.ok){
+                console.log(responseData);
+                history.push('/');
+            } else {
+                console.log(responseData);
+                setErrors(responseData);
+            }
         } catch (err) {
-            console.log(err);
+            console.log(err.message);
+            setErrors(err.message);
         }
     };
 
@@ -73,6 +91,8 @@ const Login = (props) => {
                     name="email"
                     type="email"
                     label="Email"
+                    helperText={errors.email}
+                    error={errors.email ? true : false}
                     className={classes.textField}
                     value={email}
                     onChange={e => setEmail(e.target.value)}/>
@@ -83,9 +103,19 @@ const Login = (props) => {
                     name="password"
                     type="password"
                     label="Password"
+                    helperText={errors.password}
+                    error={errors.password ? true : false}
                     className={classes.textField}
                     value={password}
                     onChange={e => setPassword(e.target.value)}/>
+
+                    {errors.general && 
+                        <Typography
+                        color="secondary"
+                        className={classes.errorMessage}>
+                        {errors.general}
+                        </Typography>
+                    }
 
                     <Button
                     type="submit"
@@ -99,5 +129,7 @@ const Login = (props) => {
         </Grid>
     );
 };
+
+// TO DO: HANDLE ERROR MESSAGES FOR 'USER NOT FOUND' RESPONSE FROM FIREBASE IN BACK-END FUNCTIONS
 
 export default withStyles(styles)(Login);
