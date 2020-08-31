@@ -20,7 +20,6 @@ const Home = () => {
                 const data = await res.json();
                 setScreams(data);
                 setIsLoading(false);
-                console.log(data);
                 return;                
             } catch (err) {
                 setScreams([{text: 'Error while loading screams'}]);

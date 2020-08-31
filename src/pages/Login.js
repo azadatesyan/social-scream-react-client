@@ -48,9 +48,11 @@ const Login = (props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState('');
+    const [loading, setLoading] = useState(false);
 
     // Handle form submit
     const handleSubmit = async (event) => {
+        setLoading(true);
         event.preventDefault();
         const userCredentials = {
             email: email,
@@ -66,6 +68,7 @@ const Login = (props) => {
                 body: JSON.stringify(userCredentials)
             });
             const responseData = await res.json();
+            setLoading(false);
             if(res.ok){
                 console.log(responseData);
                 history.push('/');
@@ -78,6 +81,13 @@ const Login = (props) => {
             setErrors(err.message);
         }
     };
+
+    const errorMessage = errors.general &&
+    <Typography
+    color="secondary"
+    className={classes.errorMessage}>
+    {errors.general}
+    </Typography>;
 
     return (
         <Grid container spacing={0} className={classes.centeredGrid}>
@@ -109,20 +119,14 @@ const Login = (props) => {
                     value={password}
                     onChange={e => setPassword(e.target.value)}/>
 
-                    {errors.general && 
-                        <Typography
-                        color="secondary"
-                        className={classes.errorMessage}>
-                        {errors.general}
-                        </Typography>
-                    }
+                    {errorMessage}
 
                     <Button
                     type="submit"
                     variant="contained"
                     color="primary"
                     className={classes.btn}>
-                        Login
+                        {loading ? 'Logging in...' : 'Login'}
                     </Button>
                 </form>
             </Grid>
