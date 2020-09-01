@@ -16,6 +16,16 @@ export default {
     typography: {
       useNextVariants: true
     },
+    centeredGrid: {
+      textAlign: 'center',
+      justifyContent: 'center',
+      alignItems: 'center'
+  },
+    appIcon: {
+      maxHeight: '40px',
+      width: 'auto',
+      margin: '10px auto 0 auto'
+   },
     form: {
       textAlign: 'center'
     },
@@ -23,22 +33,33 @@ export default {
       margin: '20px auto 20px auto'
     },
     pageTitle: {
-      margin: '10px auto 10px auto'
+      margin: '10px auto',
+        fontSize: '2.25rem'
+    },
+    loginForm: {
+      margin: '10px auto'
     },
     textField: {
-      margin: '10px auto 10px auto'
+      margin: '5px auto'
     },
     button: {
       marginTop: 20,
       position: 'relative'
     },
-    customError: {
-      color: 'red',
-      fontSize: '0.8rem',
-      marginTop: 10
+    btn: {
+      margin: '10px auto'
+   },
+    loadingBtn: {
+      margin: '10px auto',
+      backgroundColor: '#e0e0e0',
+      disabled: 'true'
+   },
+    errorMessage: {
+      margin: '10px auto',
+      fontSize: '0.8rem'
     },
-    progress: {
-      position: 'absolute'
+    signUpLink: {
+      textDecoration: 'underline'
     },
     invisibleSeparator: {
       border: 'none',

@@ -1,41 +1,16 @@
 // React imports
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 
 // Material UI imports
-import { withStyles } from '@material-ui/core/styles/';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { Grid, Typography, TextField, Button } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles/';
 import AppIcon from '../util/monkey.svg';
+import theme from '../util/theme';
 
 // Material-UI styling
-const styles = {
-    centeredGrid: {
-        textAlign: 'center',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    appIcon: {
-        maxHeight: '40px',
-        width: 'auto',
-        margin: '10px auto 0 auto'
-    },
-    pageTitle: {
-        margin: '10px auto',
-        fontSize: '2.25rem'
-    },
-    loginForm: {
-        margin: '10px auto'
-    },
-    textField: {
-        margin: '5px auto'
-    },
-    btn: {
-        margin: '10px auto'
-    },
-    errorMessage: {
-        margin: '10px auto'
-    }
-};
+const styles = theme;
 
 const Login = (props) => {
     // Importing classes for MUI withStyles styling
@@ -71,6 +46,7 @@ const Login = (props) => {
             setLoading(false);
             if(res.ok){
                 console.log(responseData);
+                localStorage.setItem('FBIdToken', `Bearer ${responseData.token}`);
                 history.push('/');
             } else {
                 console.log(responseData);
@@ -82,16 +58,35 @@ const Login = (props) => {
         }
     };
 
+    // Conditionally rendered elements
     const errorMessage = errors.general &&
     <Typography
     color="secondary"
     className={classes.errorMessage}>
     {errors.general}
     </Typography>;
+    
+    const defaultLoginBtn = 
+    <Button
+    type="submit"
+    variant="contained"
+    color="primary"
+    className={classes.btn}>
+    Login
+    </Button>;
+
+    const loadingLoginButton = 
+    <Button
+    type="submit"
+    variant="contained"
+    color="primary"
+    className={classes.loadingBtn}>
+        <CircularProgress size={20} />
+    </Button>;
 
     return (
         <Grid container spacing={0} className={classes.centeredGrid}>
-            <Grid item xs={4}>
+            <Grid item xs={3}>
                 <img src={AppIcon} alt="monkey-icon" className={classes.appIcon}></img>
                 <Typography variant="h2" className={classes.pageTitle}>Login</Typography>
                 <form noValidate className={classes.loginForm} onSubmit={handleSubmit}>
@@ -120,20 +115,21 @@ const Login = (props) => {
                     onChange={e => setPassword(e.target.value)}/>
 
                     {errorMessage}
-
-                    <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    className={classes.btn}>
-                        {loading ? 'Logging in...' : 'Login'}
-                    </Button>
+                    {loading ? loadingLoginButton : defaultLoginBtn}
+                    <br />
+                    <small>Don't have an account? &nbsp;
+                        <Link
+                        to="/signup"
+                        className={classes.signUpLink}>
+                            Sign up here
+                        </Link>
+                    </small>
                 </form>
             </Grid>
         </Grid>
     );
 };
 
-// TO DO: HANDLE ERROR MESSAGES FOR 'USER NOT FOUND' RESPONSE FROM FIREBASE IN BACK-END FUNCTIONS
+// TO DO: HANDLE ERROR MESSAGES FOR 'USER NOT FOUND' & 'AUTH/TOO-MANY-REQUESTS' RESPONSES FROM FIREBASE
 
 export default withStyles(styles)(Login);
