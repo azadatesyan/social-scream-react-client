@@ -46,7 +46,7 @@ const Login = (props) => {
             setLoading(false);
             if(res.ok){
                 console.log(responseData);
-                localStorage.setItem('FBIdToken', `Bearer ${responseData.token}`);
+                localStorage.setItem('FBIdToken', `Bearer ${responseData.userToken}`);
                 history.push('/');
             } else {
                 console.log(responseData);
@@ -129,7 +129,5 @@ const Login = (props) => {
         </Grid>
     );
 };
-
-// TO DO: HANDLE ERROR MESSAGES FOR 'USER NOT FOUND' & 'AUTH/TOO-MANY-REQUESTS' RESPONSES FROM FIREBASE
 
 export default withStyles(styles)(Login);

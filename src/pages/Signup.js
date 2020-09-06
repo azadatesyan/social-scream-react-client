@@ -50,7 +50,7 @@ const Signup = (props) => {
             setLoading(false);
             if(res.ok){
                 console.log(responseData);
-                localStorage.setItem('FBIdToken', `Bearer ${responseData.token}`);
+                localStorage.setItem('FBIdToken', `Bearer ${responseData.userToken}`);
                 history.push('/');
             } else {
                 console.log(responseData);
