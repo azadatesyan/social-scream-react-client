@@ -2,6 +2,10 @@
 import React, { useState } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 
+// Redux imports
+import { useSelector, useDispatch } from 'react-redux';
+import { loginUser } from '../redux/actions/userActions';
+
 // Material UI imports
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Grid, Typography, TextField, Button } from '@material-ui/core';
@@ -13,6 +17,11 @@ import theme from '../util/theme';
 const styles = theme;
 
 const Login = (props) => {
+    // Hooks and stuff from Redux
+    const content = useSelector(state => state);
+    const dispatch = useDispatch();
+    const { errors, loading } = content.ui;
+
     // Importing classes for MUI withStyles styling
     const { classes } = props;
 
@@ -22,40 +31,15 @@ const Login = (props) => {
     // Controlled form components
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [errors, setErrors] = useState('');
-    const [loading, setLoading] = useState(false);
 
     // Handle form submit
     const handleSubmit = async (event) => {
-        setLoading(true);
         event.preventDefault();
         const userCredentials = {
             email: email,
             password: password
         };
-        try {
-            const res = await fetch('https://europe-west1-socialape-6b91a.cloudfunctions.net/api/login', {
-                method: "POST",
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(userCredentials)
-            });
-            const responseData = await res.json();
-            setLoading(false);
-            if(res.ok){
-                console.log(responseData);
-                localStorage.setItem('FBIdToken', `Bearer ${responseData.userToken}`);
-                history.push('/');
-            } else {
-                console.log(responseData);
-                setErrors(responseData);
-            }
-        } catch (err) {
-            console.log(err.message);
-            setErrors(err.message);
-        }
+        dispatch(loginUser(userCredentials, history));
     };
 
     // Conditionally rendered elements

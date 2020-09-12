@@ -2,6 +2,10 @@
 import React, { useState } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 
+// Redux imports
+import { useSelector, useDispatch } from 'react-redux';
+import { signupUser } from '../redux/actions/userActions';
+
 // Material UI imports
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Grid, Typography, TextField, Button } from '@material-ui/core';
@@ -16,6 +20,11 @@ const Signup = (props) => {
     // Importing classes for MUI withStyles styling
     const { classes } = props;
 
+    // Importing state and dispatch from Redux
+    const content = useSelector(state => state);
+    const dispatch = useDispatch();
+    const { errors, loading } = content.ui;
+
     // Importing history from React Router DOM
     const history = useHistory();
 
@@ -24,12 +33,9 @@ const Signup = (props) => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [username, setUsername] = useState('');
-    const [errors, setErrors] = useState('');
-    const [loading, setLoading] = useState(false);
 
     // Handle form submit
     const handleSubmit = async (event) => {
-        setLoading(true);
         event.preventDefault();
         const newUserData = {
             email: email,
@@ -37,29 +43,7 @@ const Signup = (props) => {
             confirmPassword: confirmPassword,
             username: username
         };
-        try {
-            const res = await fetch('https://europe-west1-socialape-6b91a.cloudfunctions.net/api/signup', {
-                method: "POST",
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(newUserData)
-            });
-            const responseData = await res.json();
-            setLoading(false);
-            if(res.ok){
-                console.log(responseData);
-                localStorage.setItem('FBIdToken', `Bearer ${responseData.userToken}`);
-                history.push('/');
-            } else {
-                console.log(responseData);
-                setErrors(responseData);
-            }
-        } catch (err) {
-            console.log(err.message);
-            setErrors(err.message);
-        }
+        dispatch(signupUser(newUserData, history));
     };
 
     // Conditionally rendered elements
