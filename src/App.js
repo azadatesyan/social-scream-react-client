@@ -5,10 +5,10 @@ import JwtDecode from 'jwt-decode';
 import './App.css';
 
 // Redux stuff
-import { Provider, useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
 import store from './redux/store/store';
 import { logoutUser } from './redux/actions/userActions';
-import { SET_AUTHENTICATED } from "./redux/reducers/types";
+import { getUserData } from "./redux/actions/userActions";
 
 // Material-UI stuff
 import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
@@ -40,7 +40,7 @@ if (token) {
     dispatch(logoutUser());
     window.location.href = '/login';
   } else {
-    dispatch({type: SET_AUTHENTICATED});
+    dispatch(getUserData());
   }
 }
 
