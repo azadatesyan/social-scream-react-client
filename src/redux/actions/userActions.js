@@ -86,7 +86,6 @@ export const getUserData = () => async (dispatch) => {
             }
         });
         const data = await res.json();
-        console.log(data);
         dispatch({
             type: SET_USER,
             payload: data 
