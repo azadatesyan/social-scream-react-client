@@ -1,14 +1,18 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles/';
+
+// MUI imports
+import { makeStyles } from '@material-ui/core/styles/';
+import { Paper, Avatar } from '@material-ui/core/';
+
 import { useSelector, useDispatch } from 'react-redux';
 
 // JSS styling to match Material-UI's official doc
-const styles = {
-    card: {
-        display: 'flex',
-        marginBottom: 20
+const useStyles = makeStyles({
+    avatar: {
+        margin: '5px auto'
+
     }
-};
+});
 
 // The component
 const Profile = () => {
@@ -18,10 +22,13 @@ const Profile = () => {
 
     // Get state & props
     const { user: {authenticated}, ui: {loading} } = content;
+    const classes = useStyles();
 
     return (
-        authenticated
+        <Paper>
+            <Avatar className={classes.avatar} alt="User picture" src="" />
+        </Paper>
     )
 }
 
-export default withStyles(styles)(Profile);
+export default Profile;

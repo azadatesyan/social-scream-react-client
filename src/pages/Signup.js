@@ -9,16 +9,16 @@ import { signupUser } from '../redux/actions/userActions';
 // Material UI imports
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Grid, Typography, TextField, Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles/';
+import { makeStyles } from '@material-ui/core/styles/';
 import AppIcon from '../util/monkey.svg';
 import theme from '../util/theme';
 
 // Material-UI styling
-const styles = theme;
+const useStyles = makeStyles(theme);
 
 const Signup = (props) => {
     // Importing classes for MUI withStyles styling
-    const { classes } = props;
+    const classes = useStyles();
 
     // Importing state and dispatch from Redux
     const content = useSelector(state => state);
@@ -142,4 +142,4 @@ const Signup = (props) => {
     );
 };
 
-export default withStyles(styles)(Signup);
+export default Signup;

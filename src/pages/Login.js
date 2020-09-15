@@ -9,12 +9,12 @@ import { loginUser } from '../redux/actions/userActions';
 // Material UI imports
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Grid, Typography, TextField, Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles/';
+import { makeStyles } from '@material-ui/core/styles/';
 import AppIcon from '../util/monkey.svg';
 import theme from '../util/theme';
 
 // Material-UI styling
-const styles = theme;
+const useStyles = makeStyles(theme);
 
 const Login = (props) => {
     // Hooks and stuff from Redux
@@ -23,7 +23,7 @@ const Login = (props) => {
     const { errors, loading } = content.ui;
 
     // Importing classes for MUI withStyles styling
-    const { classes } = props;
+    const classes = useStyles();
 
     // Importing history from React Router DOM
     const history = useHistory();
@@ -114,4 +114,4 @@ const Login = (props) => {
     );
 };
 
-export default withStyles(styles)(Login);
+export default Login;

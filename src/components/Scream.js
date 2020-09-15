@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, CardMedia, CardContent, Typography } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles/';
+import { makeStyles } from '@material-ui/core/styles/';
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -9,7 +9,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 dayjs.extend(relativeTime);
 
 // JSS styling to match Material-UI's official doc
-const styles = {
+const useStyles = makeStyles({
     card: {
         display: 'flex',
         marginBottom: 20
@@ -21,11 +21,12 @@ const styles = {
         padding: 20,
         objectFit: 'cover'
     }
-};
+});
 
 // The actual component
 const Scream = (props) => {
-    const { classes, data } = props;
+    const { data } = props;
+    const classes = useStyles();
     return (
         <Card className={classes.card}>
             <CardMedia className={classes.image}
@@ -37,7 +38,7 @@ const Scream = (props) => {
                 <Typography variant="body1">{data.text}</Typography>
             </CardContent>
         </Card>
-    )
+    );
 }
 
-export default withStyles(styles)(Scream);
+export default Scream;
