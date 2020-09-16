@@ -76,7 +76,7 @@ const Signup = (props) => {
         <Grid container spacing={0} className={classes.centeredGrid}>
             <Grid item xs={3}>
                 <img src={AppIcon} alt="monkey-icon" className={classes.appIcon}></img>
-                <Typography variant="h2" className={classes.pageTitle}>Signup</Typography>
+                <Typography variant="h2" className={classes.pageTitle}>Create an account</Typography>
                 <form noValidate className={classes.loginForm} onSubmit={handleSubmit}>
                     <TextField
                     fullWidth
