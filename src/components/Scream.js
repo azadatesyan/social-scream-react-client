@@ -1,9 +1,14 @@
 import React from 'react';
-import { Card, CardMedia, CardContent, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles/';
 import { Link } from 'react-router-dom';
+
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+
+// MUI imports
+import { Card, CardMedia, CardContent, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles/';
+import LikeButton from './LikeButton';
+import CommentButton from './CommentButton';
 
 // Bind the plugin to the dayJS lib
 dayjs.extend(relativeTime);
@@ -36,6 +41,10 @@ const Scream = (props) => {
                 <Typography variant="h5" component={Link} to={`/users/${data.username}`} color="primary">{data.username}</Typography>
                 <Typography variant="body2" color="textSecondary">{dayjs(data.createdAt).fromNow()}</Typography>
                 <Typography variant="body1">{data.text}</Typography>
+                <div style={{display: "inline"}}>
+                    <LikeButton />
+                    <CommentButton />
+                </div>
             </CardContent>
         </Card>
     );

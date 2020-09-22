@@ -61,6 +61,10 @@ const useStyles = makeStyles({
         marginTop: '10px',
         display: 'flex',
         justifyContent: 'center'
+    },
+    svgAlign: {
+        verticalAlign: 'middle',
+        display: 'inline-block'
     }
 });
 
@@ -121,8 +125,8 @@ const Profile = () => {
             </div>)}
 
             {location && (<div className={classes.textDiv}>
-                <RoomIcon />
-                <span>
+                <RoomIcon className={classes.svgAlign} />
+                <span className={classes.svgAlign} >
                     {location}
                 </span>
             </div>)}

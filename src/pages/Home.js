@@ -1,42 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+
+// Redux imports
+import { useSelector, useDispatch } from 'react-redux';
+import { getScreams } from "../redux/actions/dataActions";
+
+// MUI imports
 import Grid from '@material-ui/core/Grid';
 import Scream from '../components/Scream';
 import Profile from '../components/Profile';
 
 const Home = () => {
-    // Initial state with no screams
-    const [ screams, setScreams ] = useState(null);
-    const [ isLoading, setIsLoading ] = useState(true);
-
-    // On component mounted, start API request to get screams
+    // Redux init
+    const dispatch = useDispatch();
+    const content = useSelector(state => state);
+    const { data: { screams, loading } } = content;
+    
+    // On component mounted, dispatch request to get screams
     useEffect(() => {
-        // To be able to cancel and clean the request if component unmounts
-        const controller = new AbortController();
-        const signal = controller.signal;
+        dispatch(getScreams());
+    }, [dispatch]);
 
-        const getScreams = async () => {
-            try {
-                setIsLoading(true);
-                const res = await fetch('https://europe-west1-socialape-6b91a.cloudfunctions.net/api/screams', { signal });
-                const data = await res.json();
-                setScreams(data);
-                setIsLoading(false);
-                return;                
-            } catch (err) {
-                setScreams([{text: 'Error while loading screams'}]);
-                setIsLoading(false);
-                console.log(err);
-            }
-        };
-
-        getScreams();
-
-        return () => {
-            controller.abort();
-        }
-    }, []);
-
-    const screamsData = isLoading ? <p>Loading screams...</p> : screams.map(scream => <Scream key={scream.screamId} data={scream} />) ;
+    const screamsData = loading ? <p>Loading screams...</p> : screams.map(scream => <Scream key={scream.screamId} data={scream} />) ;
     return (
         <Grid container spacing={2}>
             <Grid item sm={8} xs={12}>
