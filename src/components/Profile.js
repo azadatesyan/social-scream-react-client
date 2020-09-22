@@ -3,19 +3,56 @@ import dayjs from 'dayjs';
 
 // MUI imports
 import { makeStyles } from '@material-ui/core/styles/';
-import { Paper, Avatar, Typography, Link, Button } from '@material-ui/core/';
+import { Paper, Avatar, Typography, Link, Button, Zoom, Tooltip } from '@material-ui/core/';
 import RoomIcon from '@material-ui/icons/Room';
 import LinkIcon from '@material-ui/icons/Link';
 import ScheduleIcon from '@material-ui/icons/Schedule';
+import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
+import KeyboardReturnIcon from '@material-ui/icons/KeyboardReturn';
+import TooltipBtn from '../util/TooltipBtn';
 
+// Redux stuff
 import { useSelector, useDispatch } from 'react-redux';
+import { logoutUser, uploadImage } from '../redux/actions/userActions';
+import EditProfile from './EditProfile';
 
 // JSS styling to match Material-UI's official doc
 const useStyles = makeStyles({
     avatar: {
+        position: 'relative',
         margin: '0px auto',
         height: '150px',
-        width: '150px'
+        width: '150px',
+        '&:hover': {
+            background: 'rgba(0,0,0,0.8)'
+        }
+    },
+    profileWrapper: {
+        width: '50%',
+        margin: '0 auto',
+        position: 'relative',
+        cursor: 'pointer',
+    },
+    logoWrapper: {
+        position: 'absolute',
+        top: '0',
+        left: '0',
+        height: '100%',
+        width: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent:'center',
+        '&:hover svg': {
+            display: 'block'
+        }
+    },
+    flexBetween: {
+        display: 'flex',
+        justifyContent: 'space-between'
+    },
+    addPhotoIcon: {
+        color: 'white',
+        display: 'none'
     },
     paper: {
         padding: '20px'
@@ -34,16 +71,39 @@ const Profile = () => {
     const dispatch = useDispatch();
 
     // Get state & props
-    const { user: { credentials: { username, profilePicture, bio, location, website, createdAt }, authenticated }, ui: { loading } } = content;
+    const { user: { credentials: { username, profilePicture, bio, location, website, createdAt }, authenticated, loading }} = content;
     const classes = useStyles();
+
+    // Event handlers
+    const handleImageChange = (e) => {
+        const imageToUpload = e.target.files[0];
+        const formData = new FormData();
+        formData.append('image', imageToUpload, imageToUpload.name);
+        dispatch(uploadImage(formData));
+    };
+
+    const handleLogout = () => {
+        dispatch(logoutUser());
+    };
 
     // DayJS parsing of createdAt
     const accountCreationDate = createdAt && (`Joined ${dayjs(createdAt._seconds * 1000).format('MMM YYYY')}`);
     
-    // Fully loaded profile markup
+    // Authenticated profile markup
     const loggedProfile = (
         <Paper className={classes.paper}>
-            <Avatar className={classes.avatar} alt="User picture" src={profilePicture} />
+            <input type="file" id="file" style={{visibility: "hidden"}} onChange={handleImageChange}/>
+            <div className={classes.profileWrapper}>
+                <Avatar className={classes.avatar} alt="User picture" src={profilePicture} />
+                <div className={classes.logoWrapper}>
+                    <Tooltip TransitionComponent={Zoom} title="Change picture">
+                        <Button onClick={() => {document.getElementById('file').click()}}>
+                            <AddAPhotoIcon className={classes.addPhotoIcon} />
+                        </Button>
+                    </Tooltip>
+                </div>
+            </div>
+
             <div className={classes.textDiv}>
                 <Typography
                 variant="h5"
@@ -79,11 +139,18 @@ const Profile = () => {
                 <span>
                     {accountCreationDate}
                 </span>
-            </div>                                    
+            </div>
+
+            <div className={classes.flexBetween}>
+                <TooltipBtn onClick={handleLogout} tipText="Logout">
+                    <KeyboardReturnIcon color="primary" />
+                </TooltipBtn>
+                <EditProfile />
+            </div>
         </Paper>
     );
 
-    // Fully loaded profile markup
+    // Unauthenticated profile markup
     const notLoggedProfile = (
         <Paper className={classes.paper}>
             <Typography className={classes.textDiv}>
@@ -108,8 +175,14 @@ const Profile = () => {
         </Paper>
     );
 
+    const loadingProfile = (
+        <Typography variant="h5">
+            Loading...
+        </Typography>
+    );
+
     return (
-        !loading && (authenticated ? loggedProfile : notLoggedProfile)
+        loading ? loadingProfile : (authenticated ? loggedProfile : notLoggedProfile)
     )
 }
 

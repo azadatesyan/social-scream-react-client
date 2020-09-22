@@ -1,10 +1,11 @@
-import { SET_AUTHENTICATED, SET_UNAUTHENTICATED, SET_USER } from '../reducers/types';
+import { SET_AUTHENTICATED, SET_UNAUTHENTICATED, SET_USER, LOADING_USER } from '../reducers/types';
 
 const initialState = {
     authenticated: false,
     credentials: {},
     likes: [],
-    notifications: []
+    notifications: [],
+    loading: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -21,7 +22,14 @@ const reducer = (state = initialState, action) => {
         case SET_USER:
             return {
                 authenticated: true,
+                loading: false,
                 ...action.payload
+            }
+
+        case LOADING_USER:
+            return {
+                ...state,
+                loading: true
             }
             
         default:

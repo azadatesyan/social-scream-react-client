@@ -1,4 +1,4 @@
-import { SET_USER, SET_UNAUTHENTICATED, SET_ERRORS, CLEAR_ERRORS, LOADING_UI } from '../reducers/types';
+import { SET_USER, SET_UNAUTHENTICATED, SET_ERRORS, CLEAR_ERRORS, LOADING_UI, LOADING_USER } from '../reducers/types';
 
 export const loginUser = (userCredentials, history) => async (dispatch) => {
     // Dispatch the 'Loading' action
@@ -78,6 +78,7 @@ export const logoutUser = () => (dispatch) => {
 
 export const getUserData = () => async (dispatch) => {
     const userToken = localStorage.getItem('FBIdToken');
+    dispatch({type: LOADING_USER});
     try {
         const res = await fetch('https://europe-west1-socialape-6b91a.cloudfunctions.net/api/user', {
             method: "GET",
@@ -95,5 +96,47 @@ export const getUserData = () => async (dispatch) => {
             type: SET_ERRORS,
             payload: 'Error while loading screams'
         });
+    }
+};
+
+export const uploadImage = (formData) => async (dispatch) => {
+    try {
+        const userToken = localStorage.getItem('FBIdToken');
+        dispatch({type: LOADING_USER});
+        const res = await fetch('https://europe-west1-socialape-6b91a.cloudfunctions.net/api/user/image', {
+            method: 'POST',
+            headers: {
+                'Authorization': userToken
+            },
+            body: formData
+        });
+        const data = await res.json();
+        data.message && dispatch(getUserData());
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+export const editUser = (userDetails) => async (dispatch) => {
+    try {
+        const userToken = localStorage.getItem('FBIdToken');
+        dispatch({ type: LOADING_USER });
+        const res = await fetch('https://europe-west1-socialape-6b91a.cloudfunctions.net/api/user', {
+            method: 'POST',
+            headers: {
+                'Authorization': userToken,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userDetails)
+        });
+        const data = await res.json();
+        if (data.message) {
+            dispatch(getUserData());
+        } else {
+            console.log('An error happened');
+        }
+    } catch (err) {
+        console.log(err);
     }
 };
