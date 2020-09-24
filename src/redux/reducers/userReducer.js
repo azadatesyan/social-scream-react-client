@@ -1,4 +1,4 @@
-import { SET_AUTHENTICATED, SET_UNAUTHENTICATED, SET_USER, LOADING_USER } from '../reducers/types';
+import { SET_AUTHENTICATED, SET_UNAUTHENTICATED, SET_USER, LOADING_USER, LIKE_SCREAM, UNLIKE_SCREAM } from '../reducers/types';
 
 const initialState = {
     authenticated: false,
@@ -30,6 +30,28 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 loading: true
+            }
+
+        case LIKE_SCREAM:
+            return {
+                ...state,
+                likes: [
+                    ...state.likes,
+                    {
+                        username: state.credentials.username,
+                        screamId: action.payload.screamId
+                    }
+                ]
+            }
+
+        case UNLIKE_SCREAM:
+            console.log('Unlike scream number');
+            console.log(action.payload);
+            console.log('Removing state like number ' + state.likes);
+            let likes = state.likes.filter(like => like.screamId !== action.payload.screamId);
+            return {
+                ...state,
+                likes
             }
             
         default:

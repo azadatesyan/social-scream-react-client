@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import dayjs from 'dayjs';
 
 // MUI imports
@@ -73,6 +74,7 @@ const Profile = () => {
     // Redux init
     const content = useSelector(state => state);
     const dispatch = useDispatch();
+    const history = useHistory();
 
     // Get state & props
     const { user: { credentials: { username, profilePicture, bio, location, website, createdAt }, authenticated, loading }} = content;
@@ -165,14 +167,14 @@ const Profile = () => {
                 variant="contained"
                 color="primary"
                 style={{margin: "0 10px"}}
-                onClick={() => {window.location.href = '/login'}}>
+                onClick={() => {history.push('/login')}}>
                     Login
                 </Button>
                 <Button
                 variant="contained"
                 color="secondary"
                 style={{margin: "0 10px"}}
-                onClick={() => {window.location.href = '/signup'}}>
+                onClick={() => {history.push('/signup')}}>
                     Signup
                 </Button>
             </div>

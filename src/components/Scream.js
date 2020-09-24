@@ -42,8 +42,8 @@ const Scream = (props) => {
                 <Typography variant="body2" color="textSecondary">{dayjs(data.createdAt).fromNow()}</Typography>
                 <Typography variant="body1">{data.text}</Typography>
                 <div style={{display: "inline"}}>
-                    <LikeButton />
-                    <CommentButton />
+                    <LikeButton count={data.likeCount} screamId={data.screamId} />
+                    <CommentButton count={data.commentCount} screamId={data.screamId} />
                 </div>
             </CardContent>
         </Card>
