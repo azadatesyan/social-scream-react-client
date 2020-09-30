@@ -46,7 +46,7 @@ const reducer = (state = initialState, action) => {
 
         case UNLIKE_SCREAM:
             console.log('Unlike scream number');
-            console.log(action.payload);
+            console.log(action.payload.screamId);
             console.log('Removing state like number ' + state.likes);
             let likes = state.likes.filter(like => like.screamId !== action.payload.screamId);
             return {

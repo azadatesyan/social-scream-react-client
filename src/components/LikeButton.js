@@ -2,6 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles/';
+import LikedIcon from '@material-ui/icons/Favorite';
 import NotLikedIcon from '@material-ui/icons/FavoriteBorder';
 import TooltipBtn from '../util/TooltipBtn';
 
@@ -45,10 +46,17 @@ const LikeButton = ({ count, screamId }) => {
     return (
         <div className={classes.likeBtn}>
             <TooltipBtn onClick={handleClick} tipText={tipText} padding={8}>
+                {isLiked ?
+                <LikedIcon
+                color="primary"
+                className={classes.svgAlign}
+                style={{cursor: 'pointer'}} />
+                :
                 <NotLikedIcon
                 color="primary"
                 className={classes.svgAlign}
                 style={{cursor: 'pointer'}} />
+                }
             </TooltipBtn>
             <span className={classes.svgAlign}>{count} likes</span>
         </div>

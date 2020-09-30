@@ -5,11 +5,12 @@ import { Link } from 'react-router-dom';
 import Appbar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import HomeIcon from '@material-ui/icons/Home';
-import AddIcon from '@material-ui/icons/Add';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import PersonIcon from '@material-ui/icons/Person';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
+
 import TooltipBtn from '../util/TooltipBtn';
+import PostScream from './PostScream';
 
 // Redux imports
 import { useSelector } from 'react-redux' ;
@@ -22,9 +23,7 @@ const Navbar = () => {
                 <Toolbar className="navbar-container">
                     {authenticated ? (
                         <Fragment>
-                            <TooltipBtn tipText="Post a scream">
-                                <AddIcon style={{color: 'white'}} />
-                            </TooltipBtn>
+                            <PostScream />
                             <Link to="/">
                                 <TooltipBtn tipText="Home">
                                     <HomeIcon style={{color: 'white'}} />

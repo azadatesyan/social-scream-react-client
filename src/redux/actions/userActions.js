@@ -71,9 +71,26 @@ export const signupUser = (userCredentials, history) => async (dispatch) => {
     }
 };
 
-export const logoutUser = () => (dispatch) => {
-    localStorage.removeItem('FBIdToken');
-    dispatch({ type: SET_UNAUTHENTICATED });
+export const logoutUser = () => async (dispatch) => {
+    const userToken = localStorage.getItem('FBIdToken');
+    try {
+        const res = await fetch('https://europe-west1-socialape-6b91a.cloudfunctions.net/api/logout', {
+            method: "GET",
+            headers: {
+                'Authorization': userToken
+            }
+        });
+        const data = await res.json();
+        if (res.ok && !data.error) {
+            localStorage.removeItem('FBIdToken');
+            dispatch({ type: SET_UNAUTHENTICATED });
+        } else {
+            console.log('Error while logging out');
+            console.log(data);
+        }
+    } catch (err) {
+        console.log(err);
+    }
 };
 
 export const getUserData = () => async (dispatch) => {
@@ -94,7 +111,7 @@ export const getUserData = () => async (dispatch) => {
     } catch (err) {
         dispatch({
             type: SET_ERRORS,
-            payload: 'Error while loading screams'
+            payload: 'Error while loading user data'
         });
     }
 };

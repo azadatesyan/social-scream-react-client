@@ -9,13 +9,12 @@ import RoomIcon from '@material-ui/icons/Room';
 import LinkIcon from '@material-ui/icons/Link';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
-import KeyboardReturnIcon from '@material-ui/icons/KeyboardReturn';
-import TooltipBtn from '../util/TooltipBtn';
+import EditProfile from './EditProfile';
+import LogoutButton from './LogoutButton';
 
 // Redux stuff
 import { useSelector, useDispatch } from 'react-redux';
-import { logoutUser, uploadImage } from '../redux/actions/userActions';
-import EditProfile from './EditProfile';
+import { uploadImage } from '../redux/actions/userActions';
 
 // JSS styling to match Material-UI's official doc
 const useStyles = makeStyles({
@@ -88,10 +87,6 @@ const Profile = () => {
         dispatch(uploadImage(formData));
     };
 
-    const handleLogout = () => {
-        dispatch(logoutUser());
-    };
-
     // DayJS parsing of createdAt
     const accountCreationDate = createdAt && (`Joined ${dayjs(createdAt._seconds * 1000).format('MMM YYYY')}`);
     
@@ -148,9 +143,7 @@ const Profile = () => {
             </div>
 
             <div className={classes.flexBetween}>
-                <TooltipBtn onClick={handleLogout} tipText="Logout">
-                    <KeyboardReturnIcon color="primary" />
-                </TooltipBtn>
+                <LogoutButton />
                 <EditProfile />
             </div>
         </Paper>

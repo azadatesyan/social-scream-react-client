@@ -1,4 +1,4 @@
-import { SET_SCREAMS, LIKE_SCREAM, UNLIKE_SCREAM, LOADING_DATA } from '../reducers/types';
+import { SET_SCREAMS, LIKE_SCREAM, UNLIKE_SCREAM, LOADING_DATA, DELETE_SCREAM, POST_SCREAM } from '../reducers/types';
 
 const initialState = {
     screams: [],
@@ -27,6 +27,24 @@ const reducer = (state = initialState, action) => {
 
             return {
                 ...state
+            };
+
+        case DELETE_SCREAM:
+            let screamId = action.payload;
+            let screamDeleted = state.screams.filter(scream => scream.screamId !== screamId);
+
+            return {
+                ...state,
+                screams: screamDeleted
+            };
+
+        case POST_SCREAM:
+            return {
+                ...state,
+                screams: [
+                    action.payload,
+                    ...state.screams
+                ]
             };
     
         default:
