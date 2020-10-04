@@ -35,7 +35,6 @@ const LikeButton = ({ count, screamId }) => {
     };
 
     const handleLike = () => {
-        console.log(isLiked);
         if (isLiked) {
             dispatch(unlikeScream(screamId));
         } else {

@@ -14,6 +14,7 @@ import { makeStyles } from '@material-ui/core/styles/';
 import LikeButton from './LikeButton';
 import CommentButton from './CommentButton';
 import DeleteButton from './DeleteButton';
+import ScreamDialog from './ScreamDialog';
 
 // Bind the plugin to the dayJS lib
 dayjs.extend(relativeTime);
@@ -64,9 +65,14 @@ const Scream = (props) => {
                 </div>
                 <Typography variant="body2" color="textSecondary">{dayjs(data.createdAt).fromNow()}</Typography>
                 <Typography variant="body1">{data.text}</Typography>
-                <div style={{display: "inline"}}>
-                    <LikeButton count={data.likeCount} screamId={data.screamId} />
-                    <CommentButton count={data.commentCount} screamId={data.screamId} />
+                <div style={{display: "flex", justifyContent: "space-between"}}>
+                    <div style={{display: "inline"}}>
+                        <LikeButton count={data.likeCount} screamId={data.screamId} />
+                        <CommentButton count={data.commentCount} screamId={data.screamId} />
+                    </div>
+                    <div style={{display: "inline", paddingTop: "0.5rem"}}>
+                        <ScreamDialog screamId={data.screamId} />
+                    </div>
                 </div>
             </CardContent>
         </Card>

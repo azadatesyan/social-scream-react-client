@@ -1,8 +1,9 @@
-import { SET_SCREAMS, LIKE_SCREAM, UNLIKE_SCREAM, LOADING_DATA, DELETE_SCREAM, POST_SCREAM } from '../reducers/types';
+import { SET_SCREAMS, LIKE_SCREAM, UNLIKE_SCREAM, LOADING_DATA, DELETE_SCREAM, POST_SCREAM, SET_SCREAM, SUBMIT_COMMENT } from '../store/types';
 
 const initialState = {
     screams: [],
-    loading: false,
+    scream: {},
+    loading: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -24,7 +25,10 @@ const reducer = (state = initialState, action) => {
         case UNLIKE_SCREAM:
             let index = state.screams.findIndex(scream => scream.screamId === action.payload.screamId);
             state.screams[index] = action.payload;
-
+            if (state.scream.screamId === action.payload.screamId) {
+                action.payload.comments = state.scream.comments;
+                state.scream = action.payload;
+            }
             return {
                 ...state
             };
@@ -46,6 +50,18 @@ const reducer = (state = initialState, action) => {
                     ...state.screams
                 ]
             };
+
+        case SET_SCREAM:
+            return {
+                ...state,
+                scream: action.payload
+            };
+
+        case SUBMIT_COMMENT:
+            state.scream.comments.push(action.payload);
+            return {
+                ...state
+            }
     
         default:
             return state;

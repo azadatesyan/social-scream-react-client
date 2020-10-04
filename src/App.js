@@ -37,8 +37,9 @@ if (token) {
   const decodedToken = JwtDecode(token);
   const expirationDate = decodedToken.exp * 1000;
   if (expirationDate < Date.now()){
+    console.log('Expiration date expired');
+    localStorage.removeItem('FBIdToken');
     dispatch(logoutUser());
-    window.location.href = '/login';
   } else {
     dispatch(getUserData());
   }

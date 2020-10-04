@@ -1,4 +1,4 @@
-import { SET_SCREAMS, LIKE_SCREAM, UNLIKE_SCREAM, LOADING_DATA, DELETE_SCREAM, POST_SCREAM, LOADING_UI, STOP_LOADING_UI, SET_ERRORS } from '../reducers/types';
+import { SET_SCREAMS, SET_SCREAM, LIKE_SCREAM, UNLIKE_SCREAM, LOADING_DATA, DELETE_SCREAM, POST_SCREAM, LOADING_UI, STOP_LOADING_UI, SET_ERRORS, SUBMIT_COMMENT } from '../store/types';
 
 export const getScreams = () => async (dispatch) => {
     dispatch({type: LOADING_DATA});
@@ -14,6 +14,21 @@ export const getScreams = () => async (dispatch) => {
         console.log(err);
     }
 };
+
+export const getScream = (screamId) => async (dispatch) => {
+    dispatch({ type: LOADING_UI });
+    try {
+        const res = await fetch(`https://europe-west1-socialape-6b91a.cloudfunctions.net/api/screams/${screamId}/`);
+        const data = await res.json();
+        dispatch({
+            type: SET_SCREAM,
+            payload: data
+        });
+        dispatch({ type: STOP_LOADING_UI });
+    } catch (err) {
+        console.log(err);
+    }
+  };
 
 export const likeScream = (screamId) => async (dispatch) => {
     const userToken = localStorage.getItem('FBIdToken');
@@ -73,9 +88,8 @@ export const deleteScream = (screamId) => async (dispatch) => {
     }
 };
 
-export const postScream = (text) => async (dispatch) => {
+export const postScream = (text, handleClose) => async (dispatch) => {
     const userToken = localStorage.getItem('FBIdToken');
-    console.log(text);
     dispatch({type: LOADING_UI});
     try {
         const res = await fetch('https://europe-west1-socialape-6b91a.cloudfunctions.net/api/screams/new', {
@@ -96,6 +110,7 @@ export const postScream = (text) => async (dispatch) => {
             dispatch({
                 type: STOP_LOADING_UI
             });
+            handleClose();
         } else {
             console.log(data);
             dispatch({
@@ -109,5 +124,29 @@ export const postScream = (text) => async (dispatch) => {
             type:SET_ERRORS,
             payload: {postScream: err.toString()}
         });
+    }
+};
+
+export const submitComment = (screamId, text, setCommentBody) => async (dispatch) => {
+    console.log(JSON.stringify(text));
+    const userToken = localStorage.getItem('FBIdToken');
+    try {
+        const res = await fetch(`https://europe-west1-socialape-6b91a.cloudfunctions.net/api/screams/${screamId}/comment`, {
+            method: 'POST',
+            headers: {
+                'Authorization': userToken,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(text)
+        });
+        const data = await res.json();
+        dispatch({
+            type: SUBMIT_COMMENT,
+            payload: data
+        });
+        setCommentBody('');
+    } catch (err) {
+        console.log(err);
     }
 };

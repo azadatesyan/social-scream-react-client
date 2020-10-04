@@ -1,4 +1,4 @@
-import { SET_USER, SET_UNAUTHENTICATED, SET_ERRORS, CLEAR_ERRORS, LOADING_UI, LOADING_USER } from '../reducers/types';
+import { SET_USER, SET_UNAUTHENTICATED, SET_ERRORS, CLEAR_ERRORS, LOADING_UI, LOADING_USER } from '../store/types';
 
 export const loginUser = (userCredentials, history) => async (dispatch) => {
     // Dispatch the 'Loading' action

@@ -55,8 +55,7 @@ const EditProfile = () => {
             <DialogTitle id="form-dialog-title">Edit your details</DialogTitle>
             <DialogContent>
               <DialogContentText>
-                To subscribe to this website, please enter your email address here. We will send updates
-                occasionally.
+                We want to know you better! Present yourself in a few sentences and let us know your location.
               </DialogContentText>
               <TextField
                 margin="dense"

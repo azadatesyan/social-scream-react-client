@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { CLEAR_ERRORS } from '../redux/store/types';
 import { postScream } from '../redux/actions/dataActions';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -12,8 +14,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
 import TooltipBtn from '../util/TooltipBtn';
-
-import { useSelector, useDispatch } from 'react-redux';
 
 const PostScream = () => {
     const dispatch = useDispatch();
@@ -29,10 +29,14 @@ const PostScream = () => {
     
     const handleClose = () => {
         setOpen(false);
+        setScreamText('');
+        dispatch({
+            type: CLEAR_ERRORS
+        });
     };
 
     const handlePostScream = () => {
-        dispatch(postScream({text: screamText}));
+        dispatch(postScream({text: screamText}, handleClose));
     };
 
     const loadingBtn = 
@@ -64,8 +68,8 @@ const PostScream = () => {
                     id="scream"
                     label="Scream"
                     type="text"
-                    helperText={errors.postScream}
-                    error={errors.postScream ? true : false}
+                    helperText={errors.scream}
+                    error={errors.scream ? true : false}
                     fullWidth
                     value={screamText}
                     onChange={e => {setScreamText(e.target.value)}}
