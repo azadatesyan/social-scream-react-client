@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles/';
 import CommentIcon from '@material-ui/icons/Message';
 import TooltipBtn from '../util/TooltipBtn';
 
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 
 const useStyles = makeStyles({
     svgAlign: {
@@ -19,7 +19,6 @@ const useStyles = makeStyles({
 
 const CommentButton = ({ count }) => {
     const classes = useStyles();
-    const dispatch = useDispatch();
 
     return (
         <div className={classes.commentBtn}>

@@ -1,19 +1,16 @@
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
-import { makeStyles } from '@material-ui/core/styles/';
+// MUI
 import { Grid, Typography } from '@material-ui/core';
 
-import { useSelector, useDispatch } from 'react-redux';
+// Redux
+import { useSelector } from 'react-redux';
 
+// Other
 import dayjs from 'dayjs';
 
-const useStyles = makeStyles({
-
-});
-
 const Comments = () => {
-    const dispatch = useDispatch();
     const content = useSelector(state => state);
     const { data: { scream: { comments } } } = content;
 
@@ -23,7 +20,7 @@ const Comments = () => {
                 const { text, createdAt, username, userImage } = comment;
                 return (
                     <Fragment key={createdAt}>
-                        <Grid item sm={12}>
+                        <Grid item sm={12} style={{margin: "0.5rem 0"}}>
                             <Grid container>
                                 <Grid item sm={2}>
                                     <img src={userImage} alt="commentPicture" style={{maxWidth: "100%", height: 100, borderRadius: "50%", objectFit: "cover"}} />

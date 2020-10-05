@@ -1,8 +1,9 @@
-import { SET_SCREAMS, LIKE_SCREAM, UNLIKE_SCREAM, LOADING_DATA, DELETE_SCREAM, POST_SCREAM, SET_SCREAM, SUBMIT_COMMENT } from '../store/types';
+import { SET_SCREAMS, LIKE_SCREAM, UNLIKE_SCREAM, LOADING_DATA, DELETE_SCREAM, POST_SCREAM, SET_SCREAM, SUBMIT_COMMENT, SET_VISITED_USER, CLEAR_DATA_USER } from '../store/types';
 
 const initialState = {
     screams: [],
     scream: {},
+    user: {},
     loading: false
 };
 
@@ -61,6 +62,18 @@ const reducer = (state = initialState, action) => {
             state.scream.comments.push(action.payload);
             return {
                 ...state
+            }
+
+        case SET_VISITED_USER:
+            return {
+                ...state,
+                user: action.payload
+            }
+
+        case CLEAR_DATA_USER:
+            return {
+                ...state,
+                user: {}
             }
     
         default:

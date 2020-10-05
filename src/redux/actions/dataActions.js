@@ -1,4 +1,4 @@
-import { SET_SCREAMS, SET_SCREAM, LIKE_SCREAM, UNLIKE_SCREAM, LOADING_DATA, DELETE_SCREAM, POST_SCREAM, LOADING_UI, STOP_LOADING_UI, SET_ERRORS, SUBMIT_COMMENT } from '../store/types';
+import { SET_SCREAMS, SET_SCREAM, LIKE_SCREAM, UNLIKE_SCREAM, LOADING_DATA, DELETE_SCREAM, POST_SCREAM, LOADING_UI, STOP_LOADING_UI, SET_ERRORS, SUBMIT_COMMENT, SET_VISITED_USER } from '../store/types';
 
 export const getScreams = () => async (dispatch) => {
     dispatch({type: LOADING_DATA});
@@ -146,6 +146,21 @@ export const submitComment = (screamId, text, setCommentBody) => async (dispatch
             payload: data
         });
         setCommentBody('');
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+export const getUserData = (username) => async (dispatch) => {
+    try {
+        dispatch({type: LOADING_DATA});
+        const res = await fetch(`https://europe-west1-socialape-6b91a.cloudfunctions.net/api/user/${username}`);
+        const data = await res.json();
+        console.log(data);
+        dispatch({
+            type: SET_VISITED_USER,
+            payload: data.userDetails
+        });
     } catch (err) {
         console.log(err);
     }

@@ -39,6 +39,7 @@ const CommentForm = () => {
                 type="submit"
                 variant="contained"
                 color="primary"
+                style={{margin: "20px"}}
                 // className={classes.button}
             >
                 Submit

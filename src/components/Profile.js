@@ -13,7 +13,7 @@ import EditProfile from './EditProfile';
 import LogoutButton from './LogoutButton';
 
 // Redux stuff
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { uploadImage } from '../redux/actions/userActions';
 
 // JSS styling to match Material-UI's official doc
@@ -69,14 +69,13 @@ const useStyles = makeStyles({
 });
 
 // The component
-const Profile = () => {
+const Profile = ({currentUser, user }) => {
     // Redux init
-    const content = useSelector(state => state);
     const dispatch = useDispatch();
     const history = useHistory();
 
     // Get state & props
-    const { user: { credentials: { username, profilePicture, bio, location, website, createdAt }, authenticated, loading }} = content;
+    const { credentials: { username, profilePicture, bio, location, website, createdAt }, authenticated, loading } = user;
     const classes = useStyles();
 
     // Event handlers
@@ -93,9 +92,12 @@ const Profile = () => {
     // Authenticated profile markup
     const loggedProfile = (
         <Paper className={classes.paper}>
+            {currentUser &&
             <input type="file" id="file" style={{visibility: "hidden"}} onChange={handleImageChange}/>
+            }
             <div className={classes.profileWrapper}>
                 <Avatar className={classes.avatar} alt="User picture" src={profilePicture} />
+                {currentUser &&
                 <div className={classes.logoWrapper}>
                     <Tooltip TransitionComponent={Zoom} title="Change picture">
                         <Button onClick={() => {document.getElementById('file').click()}}>
@@ -103,6 +105,7 @@ const Profile = () => {
                         </Button>
                     </Tooltip>
                 </div>
+                }
             </div>
 
             <div className={classes.textDiv}>
@@ -141,11 +144,12 @@ const Profile = () => {
                     {accountCreationDate}
                 </span>
             </div>
-
+            {currentUser &&
             <div className={classes.flexBetween}>
                 <LogoutButton />
                 <EditProfile />
             </div>
+            }
         </Paper>
     );
 
@@ -181,8 +185,9 @@ const Profile = () => {
     );
 
     return (
-        loading ? loadingProfile : (authenticated ? loggedProfile : notLoggedProfile)
-    )
+        // If not loading, then check if we want to display the current user or a static user. If current user, then check if authenticated
+        loading ? loadingProfile : currentUser ? authenticated ? loggedProfile : notLoggedProfile : loggedProfile
+    );
 }
 
 export default Profile;

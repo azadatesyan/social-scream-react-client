@@ -7,8 +7,8 @@ import './App.css';
 // Redux stuff
 import { Provider } from 'react-redux';
 import store from './redux/store/store';
-import { logoutUser } from './redux/actions/userActions';
 import { getUserData } from "./redux/actions/userActions";
+import { SET_UNAUTHENTICATED } from './redux/store/types';
 
 // Material-UI stuff
 import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
@@ -19,6 +19,7 @@ import themeObject from './util/theme.js';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import User from './pages/User';
 
 // Components
 import Navbar from './components/Navbar';
@@ -39,7 +40,9 @@ if (token) {
   if (expirationDate < Date.now()){
     console.log('Expiration date expired');
     localStorage.removeItem('FBIdToken');
-    dispatch(logoutUser());
+    dispatch({
+      type: SET_UNAUTHENTICATED
+    });
   } else {
     dispatch(getUserData());
   }
@@ -56,6 +59,7 @@ const App = () => {
               <Route exact path="/" component={Home} />
               <AuthRoute exact path="/login" component={Login}/>
               <AuthRoute exact path="/signup" component={Signup}/>
+              <Route exact path="/users/:username" component={User}/>
             </Switch>
           </div>
         </Router>

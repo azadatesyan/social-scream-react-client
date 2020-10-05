@@ -69,8 +69,7 @@ const ScreamDialog = ({ screamId }) => {
             component={Link}
             color="primary"
             variant="h5"
-            to={`/users/${username}`}
-          >
+            to={`/users/${username}`} >
             @{username}
           </Typography>
           <hr className={classes.hrule} />
@@ -82,7 +81,6 @@ const ScreamDialog = ({ screamId }) => {
           <LikeButton count={likeCount} screamId={screamId} />
           <CommentButton tipText="comments" count={commentCount} />
         </Grid>
-        <hr />
         <Comments comments={comments} />
         <CommentForm screamId={screamId} />
       </Grid>
@@ -106,7 +104,7 @@ const ScreamDialog = ({ screamId }) => {
             padding={5}>
             <CloseIcon />
           </TooltipBtn>
-          <DialogContent style={{overflow: 'hidden'}}>
+          <DialogContent style={loading ? {overflow: "hidden"} : {overflow: "scroll"}}>
             {dialogMarkup}
           </DialogContent>
         </Dialog>
