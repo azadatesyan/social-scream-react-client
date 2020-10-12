@@ -21,7 +21,6 @@ const Home = () => {
     useEffect(() => {
         dispatch(getScreams());
         dispatch({type: CLEAR_DATA_USER});
-        dispatch(getUserData());
     }, [dispatch]);
 
     const screamsData = loading ? <p>Loading screams...</p> : screams.map(scream => <Scream key={scream.screamId} data={scream} />) ;

@@ -41,8 +41,8 @@ const Scream = (props) => {
     const classes = useStyles();
     const content = useSelector(state => state);
 
-    const { user: { authenticated, credentials: { username } } } = content;
-    const isAuthor = authenticated && username === data.username;
+    const { user: { authenticated, credentials } } = content;
+    const isAuthor = authenticated && credentials.username === data.username;
 
     return (
         <Card className={classes.card}>

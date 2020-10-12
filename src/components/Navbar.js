@@ -23,12 +23,12 @@ const Navbar = () => {
                 <Toolbar className="navbar-container">
                     {authenticated ? (
                         <Fragment>
-                            <PostScream />
                             <Link to="/">
                                 <TooltipBtn tipText="Home">
                                     <HomeIcon style={{color: 'white'}} />
                                 </TooltipBtn>
                             </Link>
+                            <PostScream />
                             <TooltipBtn tipText="Notifications">
                                 <NotificationsIcon style={{color: 'white'}} />
                             </TooltipBtn>

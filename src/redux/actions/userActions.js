@@ -107,7 +107,7 @@ export const getUserData = () => async (dispatch) => {
         dispatch({
             type: SET_USER,
             payload: data 
-        });               
+        });
     } catch (err) {
         dispatch({
             type: SET_ERRORS,
